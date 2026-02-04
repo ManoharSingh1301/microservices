@@ -39,14 +39,14 @@ graph TD
         GW --> MS[Maintenance Service - 8082]
         GW --> CS[Compliance Service - 8083]
         GW --> PS[Production Service - 8084]
-        GW --> AS[Auth Service - 8090]
+        GW --> KS[Auth Service - 8090]
     end
 
     AS -.->|Register| E
     MS -.->|Register| E
     CS -.->|Register| E
     PS -.->|Register| E
-    AS -.->|Register| E
+    KS -.->|Register| E
 ```
 
 ## 🔗 Service Responsibilities
