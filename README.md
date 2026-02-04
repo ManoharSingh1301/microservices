@@ -39,12 +39,14 @@ graph TD
         GW --> MS[Maintenance Service - 8082]
         GW --> CS[Compliance Service - 8083]
         GW --> PS[Production Service - 8084]
+        GW --> AS[Auth Service - 8090]
     end
 
     AS -.->|Register| E
     MS -.->|Register| E
     CS -.->|Register| E
     PS -.->|Register| E
+    AS -.->|Register| E
 ```
 
 ## 🔗 Service Responsibilities
@@ -146,6 +148,14 @@ All endpoints listed below should be accessed via the **API Gateway (Port 8080)*
 * `POST   /api/production/records` — Log daily production data.
 * `GET    /api/production/records` — Fetch all production records.
 * `GET    /api/production/records/plan/{planId}` — Filter records by plan.
+
+### 🛢 Auth Service
+* `GET   /auth/getmanagerdetails` — Get operational manager details.
+* `GET    /api/getadmindetails` — Get admin/user details.
+* `GET    /api/details?role={role}` — Get user with roles
+
+
+
 ## 🗂 Database Strategy
 
 To ensure high availability and scalability, each microservice owns its own isolated database.
