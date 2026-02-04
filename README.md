@@ -152,6 +152,7 @@ All endpoints listed below should be accessed via the **API Gateway (Port 8080)*
 ### 🛢 Auth Service
 * `GET   /auth/getmanagerdetails` — Get operational manager details.
 * `GET    /api/getadmindetails` — Get admin/user details.
+* `GET    /api/details?role={role}` — Get user with roles
 
 
 
