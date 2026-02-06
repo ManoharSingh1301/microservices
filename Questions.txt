@@ -1,0 +1,141 @@
+✅ React & Redux Interview Questions (Properly Framed)
+
+
+
+🔹 React Fundamentals
+
+What are React components? Explain the difference between functional and class components.
+What is JSX? How does it work internally?
+Explain props and state in React. How are they different?
+What is the role of state in a React component?
+What is useState hook? How does it work?
+Why should state not be mutated directly in React?
+
+
+
+🔹 React Hooks (Core)
+
+What are React Hooks? Why were they introduced?
+Explain the useEffect hook in detail.
+
+What are the different lifecycle phases handled by useEffect?
+
+Mounting
+Updating
+Unmounting (destroying)
+
+How do you handle component mounting using useEffect?
+How do you handle component updates using useEffect?
+How do you clean up resources during component unmounting using useEffect?
+What happens if the dependency array in useEffect is empty, missing, or has values?
+
+
+
+🔹 Advanced Hooks
+
+What is useReducer? When should it be preferred over useState?
+Explain the flow of state → action → reducer → new state in useReducer.
+What is useContext? How does it help avoid prop drilling?
+What is useSelector? How does it work in Redux?
+Difference between useContext and Redux?
+
+
+
+🔹 Performance Optimization Hooks
+
+What is useMemo? How does it improve performance?
+What is useCallback? Why is it needed?
+Difference between useMemo and useCallback.
+What problems occur if useMemo and useCallback are not used properly?
+
+
+
+🔹 Controlled vs Uncontrolled Components
+
+What is a controlled component in React?
+What is an uncontrolled component?
+Difference between controlled and uncontrolled components.
+When should you prefer controlled components?
+
+
+
+🔹 React Lifecycle & Architecture
+
+Explain the lifecycle of a React component.
+How is lifecycle handled differently in class components vs functional components?
+How does React manage state updates and re‑rendering?
+
+
+
+🔹 Redux Fundamentals
+
+What is Redux? Why is it used?
+Explain the core concepts of Redux:
+
+Store
+State
+Action
+Reducer
+Dispatch
+
+Explain Redux data flow step by step.
+What is the role of the Redux store?
+What is an action? What must an action contain?
+What is a reducer? Why must reducers be pure functions?
+What does dispatch() do?
+
+
+
+🔹 Redux in Detail (Advanced)
+
+Difference between Redux and Context API.
+What is Redux Toolkit? Why is it recommended?
+What are middleware in Redux?
+What is Redux Thunk? Why is it used?
+How do you handle async API calls in Redux?
+What is useDispatch and useSelector?
+
+
+
+🔹 Routing in React
+
+What is routing in React? Why is it required?
+Explain React Router and its core components.
+Difference between BrowserRouter and HashRouter.
+What is Route, Routes, Link, and NavLink?
+How do you pass parameters using routing?
+What is protected routing? How do you implement it?
+How does lazy loading work with routes?
+
+
+
+🔹 Portals & Advanced Patterns
+
+What are React Portals? Why are they used?
+Give a real‑world example where React Portals are useful.
+What are Higher‑Order Components (HOC)?
+How do HOCs differ from custom hooks?
+
+
+
+🔹 Project‑Based Interview Questions (Very Important)
+
+Explain your project architecture.
+What features did you personally implement in your project?
+Which React hooks did you use and why?
+How did you manage state in your application?
+Did you use Redux or Context API? Why?
+How did you handle API calls and error handling?
+How did you optimize performance in your project?
+What challenges did you face and how did you resolve them?
+
+
+
+🔹 Coding from Scratch (Common Interview Prompts)
+
+Write a simple React component from scratch using useState.
+Create a counter application using useReducer.
+Implement a form using controlled components.
+Implement routing between multiple pages.
+Write a Redux reducer and action for a simple use case.
+Implement useEffect for API calling with cleanup logic.

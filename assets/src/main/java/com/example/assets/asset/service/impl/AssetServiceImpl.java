@@ -6,7 +6,6 @@ import com.example.assets.asset.entity.Asset;
 import com.example.assets.asset.enums.AssetStatus;
 import com.example.assets.asset.repository.AssetRepository;
 import com.example.assets.asset.service.AssetService;
-
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,22 +19,19 @@ public class AssetServiceImpl implements AssetService {
     public AssetServiceImpl(AssetRepository repo) {
         this.repo = repo;
     }
-
-    /* ================= CREATE ASSET ================= */
+    //create asset
     @Override
     public AssetResponseDTO createAsset(AssetRequestDTO dto) {
         Asset asset = new Asset();
         asset.setName(dto.getName());
         asset.setType(dto.getType());
         asset.setLocation(dto.getLocation());
-
-        // 🔥 DEFAULT LIFECYCLE STATUS
+        //default status
         asset.setStatus(AssetStatus.REGISTERED);
 
         return map(repo.save(asset));
     }
-
-    /* ================= GET ALL ================= */
+    //get all assets
     @Override
     public List<AssetResponseDTO> getAllAssets() {
         return repo.findAll()
@@ -44,13 +40,13 @@ public class AssetServiceImpl implements AssetService {
                    .collect(Collectors.toList());
     }
 
-    /* ================= GET BY ID ================= */
+    //get asset by id
     @Override
     public AssetResponseDTO getAssetById(Long id) {
         return map(repo.findById(id).orElseThrow());
     }
 
-    /* ================= UPDATE ASSET ================= */
+    //update asset
     @Override
     public AssetResponseDTO updateAsset(Long id, AssetRequestDTO dto) {
         Asset asset = repo.findById(id).orElseThrow();
@@ -58,8 +54,7 @@ public class AssetServiceImpl implements AssetService {
         asset.setName(dto.getName());
         asset.setType(dto.getType());
         asset.setLocation(dto.getLocation());
-
-        // 🔥 MOST IMPORTANT LINE (LIFECYCLE UPDATE)
+        //(lifecycle update)
         if (dto.getStatus() != null) {
             asset.setStatus(dto.getStatus());
         }
@@ -67,7 +62,7 @@ public class AssetServiceImpl implements AssetService {
         return map(repo.save(asset));
     }
 
-    /* ================= DELETE ================= */
+    //delete asset
     @Override
     public void deleteAsset(Long id) {
         repo.deleteById(id);
@@ -78,7 +73,7 @@ public class AssetServiceImpl implements AssetService {
         return repo.existsById(id);
     }
 
-    /* ================= MAPPER ================= */
+    //mapper
     private AssetResponseDTO map(Asset asset) {
         AssetResponseDTO dto = new AssetResponseDTO();
         dto.setAssetId(asset.getAssetId());
