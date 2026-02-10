@@ -156,51 +156,132 @@ All endpoints listed below should be accessed via the **API Gateway (Port 8080)*
 
 
 
-## 🗂 Database Strategy
+## 📂 Folder Structure
 
-To ensure high availability and scalability, each microservice owns its own isolated database.
-
-| Service | Database |
-| :--- | :--- |
-| Assets | `assets_db` |
-| Maintenance | `maintenance_db` |
-| Compliance | `compliance_db` |
-| Production | `production_db` |
-
-* ✔ **No shared databases**
-* ✔ **Loose coupling**
-* ✔ **Independent scaling**
+```
+microservices/
+├── apigateway/               # API Gateway Service
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   └── com/
+│   │   │       └── example/
+│   │   │           └── apigateway/
+│   │   │               ├── config/
+│   │   │               └── ...
+│   │   ├── resources/
+│   │       └── application.properties
+│   └── pom.xml
+├── assets/                   # Assets Service
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   └── com/
+│   │   │       └── example/
+│   │   │           └── assets/
+│   │   │               └── ...
+│   │   ├── resources/
+│   │       └── application.properties
+│   └── pom.xml
+├── maintenance/              # Maintenance Service
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   └── com/
+│   │   │       └── example/
+│   │   │           └── maintenance/
+│   │   │               └── ...
+│   │   ├── resources/
+│   │       └── application.properties
+│   └── pom.xml
+├── compliance/               # Compliance Service
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   └── com/
+│   │   │       └── example/
+│   │   │           └── compliance/
+│   │   │               └── ...
+│   │   ├── resources/
+│   │       └── application.properties
+│   └── pom.xml
+├── production/               # Production Service
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   └── com/
+│   │   │       └── example/
+│   │   │           └── production/
+│   │   │               └── ...
+│   │   ├── resources/
+│   │       └── application.properties
+│   └── pom.xml
+├── eureka-discovery-space/   # Eureka Discovery Server
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   └── com/
+│   │   │       └── example/
+│   │   │           └── eureka_discovery_space/
+│   │   │               └── ...
+│   │   ├── resources/
+│   │       └── application.properties
+│   └── pom.xml
+└── README.md                 # Project Documentation
+```
 
 ---
 
-## 🧪 Startup & Testing Order
+## 🚀 How to Start the Project
 
-Follow this specific sequence to ensure all services register correctly with the discovery server:
+Follow these steps to start the project in the correct sequence:
 
-1.  **Start MySQL:** Ensure the database server is running.
-2.  **Start Eureka Server:** Wait for the dashboard to be available at `http://localhost:8761`.
-3.  **Start API Gateway:** The entry point for all traffic.
-4.  **Start Microservices in order:**
-    * Assets Service
-    * Maintenance Service
-    * Compliance Service
-    * Production Service
+### 1️⃣ Start MySQL Database
+Ensure that your MySQL server is running and the required databases (`assets_db`, `maintenance_db`, `compliance_db`, `production_db`) are created. Update the database credentials in the `application.properties` file of each microservice.
 
-**Verify Setup:**
-Test the end-to-end routing through the gateway:
-`GET http://localhost:8080/api/assets/1`
+### 2️⃣ Start Eureka Discovery Server
+Navigate to the `eureka-discovery-space` directory and run the following command:
+```bash
+mvn spring-boot:run
+```
+Wait for the Eureka dashboard to be available at `http://localhost:8761`.
+
+### 3️⃣ Start API Gateway
+Navigate to the `apigateway` directory and run the following command:
+```bash
+mvn spring-boot:run
+```
+The API Gateway will be available at `http://localhost:8080`.
+
+### 4️⃣ Start All Other Microservices
+Start the remaining microservices in any order. Navigate to each service directory (`assets`, `maintenance`, `compliance`, `production`, `auth`) and run:
+```bash
+mvn spring-boot:run
+```
+
+### 5️⃣ Verify Setup
+Once all services are running, verify the setup by accessing the following endpoints through the API Gateway:
+- `GET http://localhost:8080/api/assets`
+- `GET http://localhost:8080/api/maintenance/work-orders`
+- `GET http://localhost:8080/api/compliance/reports`
+- `GET http://localhost:8080/api/production/plans`
+
+If all endpoints return valid responses, your setup is complete!
 
 ---
 
-## 🚀 Future Enhancements
+## 📖 Project Overview
 
-* **Dashboard Service:** Aggregating data for unified views.
-* **Security:** Implementation of JWT for AuthN/AuthZ.
-* **Resilience:** Adding Circuit Breakers via Resilience4j.
-* **Observability:** Centralized logging (ELK Stack) and Distributed Tracing (Zipkin).
+This project is a comprehensive microservices-based architecture designed for managing industrial operations. It includes the following key features:
+
+- **Decentralized Microservices:** Each service is independent and communicates via Eureka and Feign Clients.
+- **Centralized API Gateway:** All external traffic is routed through the API Gateway for security and centralized management.
+- **Isolated Databases:** Each service has its own database, ensuring data isolation and scalability.
+- **Scalable and Resilient:** Built with Spring Cloud technologies to handle high availability and fault tolerance.
+- **Future-Ready:** Designed with extensibility in mind, with plans for additional services like a Dashboard Service and enhanced security features.
 
 ---
 
 ## 👨‍💻 Author
 
-**Manohar Singh**
+**Team 3**
