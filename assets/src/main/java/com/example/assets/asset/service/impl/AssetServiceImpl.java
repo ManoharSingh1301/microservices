@@ -4,6 +4,8 @@ import com.example.assets.asset.dto.AssetRequestDTO;
 import com.example.assets.asset.dto.AssetResponseDTO;
 import com.example.assets.asset.entity.Asset;
 import com.example.assets.asset.enums.AssetStatus;
+import com.example.assets.asset.exception.AssetNotFoundException;
+import com.example.assets.asset.exception.InvalidAssetDataException;
 import com.example.assets.asset.repository.AssetRepository;
 import com.example.assets.asset.service.AssetService;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,13 @@ public class AssetServiceImpl implements AssetService {
     //create asset
     @Override
     public AssetResponseDTO createAsset(AssetRequestDTO dto) {
+        if (dto.getName() == null || dto.getName().trim().isEmpty()) {
+            throw new InvalidAssetDataException("Asset name cannot be empty");
+        }
+        if (dto.getType() == null) {
+            throw new InvalidAssetDataException("Asset type is required");
+        }
+        
         Asset asset = new Asset();
         asset.setName(dto.getName());
         asset.setType(dto.getType());
@@ -43,13 +52,23 @@ public class AssetServiceImpl implements AssetService {
     //get asset by id
     @Override
     public AssetResponseDTO getAssetById(Long id) {
-        return map(repo.findById(id).orElseThrow());
+        Asset asset = repo.findById(id)
+                .orElseThrow(() -> new AssetNotFoundException(id));
+        return map(asset);
     }
 
     //update asset
     @Override
     public AssetResponseDTO updateAsset(Long id, AssetRequestDTO dto) {
-        Asset asset = repo.findById(id).orElseThrow();
+        Asset asset = repo.findById(id)
+                .orElseThrow(() -> new AssetNotFoundException(id));
+
+        if (dto.getName() == null || dto.getName().trim().isEmpty()) {
+            throw new InvalidAssetDataException("Asset name cannot be empty");
+        }
+        if (dto.getType() == null) {
+            throw new InvalidAssetDataException("Asset type is required");
+        }
 
         asset.setName(dto.getName());
         asset.setType(dto.getType());
@@ -65,6 +84,9 @@ public class AssetServiceImpl implements AssetService {
     //delete asset
     @Override
     public void deleteAsset(Long id) {
+        if (!repo.existsById(id)) {
+            throw new AssetNotFoundException(id);
+        }
         repo.deleteById(id);
     }
 
