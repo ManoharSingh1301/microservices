@@ -12,7 +12,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/production/plans")
-@CrossOrigin(origins = "http://localhost:5173")
 public class ProductionPlanController {
 
     private final ProductionPlanService service;

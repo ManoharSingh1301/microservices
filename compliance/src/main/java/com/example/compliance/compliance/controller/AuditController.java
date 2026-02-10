@@ -1,6 +1,5 @@
 package com.example.compliance.compliance.controller;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/api/compliance/audit-log")
-@CrossOrigin(origins = "*")
 public class AuditController {
 
     private final AuditService auditService;

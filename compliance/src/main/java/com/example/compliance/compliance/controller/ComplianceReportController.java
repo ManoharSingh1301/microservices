@@ -12,12 +12,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import com.example.compliance.compliance.entity.ComplianceReport;
 import com.example.compliance.compliance.service.ComplianceReportService;
+
 @RestController
 @RequestMapping("/api/compliance/reports")
-@CrossOrigin(origins = "http://localhost:5173")
 public class ComplianceReportController {
 
     private final ComplianceReportService service;

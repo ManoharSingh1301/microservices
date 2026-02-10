@@ -14,48 +14,44 @@ public class CorsConfig {
     @Bean
     public CorsWebFilter corsWebFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        
-        // Allow credentials (cookies, authorization headers)
+
+        // 1. MUST be true if you are using Sessions, Cookies, or Authorization Headers
         config.setAllowCredentials(true);
-        
-        // Allowed origins (Frontend URLs)
+
+        // 2. Be explicit with Origins. Wildcards like "*" or "*" with patterns 
+        // can sometimes be rejected by browsers when credentials are true.
         config.setAllowedOrigins(Arrays.asList(
-            "http://localhost:5173",      // Vite/React dev server
-            "http://localhost:3000",      // React dev server (alternative)
-            "http://localhost:4200"       // Angular dev server
-            // Add production URLs when deploying
-            // "https://your-production-domain.com"
+            "http://localhost:3000", // Common React port
+            "http://localhost:5173", // Common Vite port
+            "http://127.0.0.1:3000",
+            "http://127.0.0.1:5173"
         ));
-        
-        // Allowed HTTP methods
-        config.setAllowedMethods(Arrays.asList(
-            "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"
-        ));
-        
-        // Allowed headers
+
+        // 3. Allowed Methods
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+
+        // 4. Specific Allowed Headers (Better for security/stability than "*")
         config.setAllowedHeaders(Arrays.asList(
-            "Origin",
-            "Content-Type",
-            "Accept",
-            "Authorization",
-            "Access-Control-Request-Method",
-            "Access-Control-Request-Headers",
+            "Origin", 
+            "Content-Type", 
+            "Accept", 
+            "Authorization", 
             "X-Requested-With"
         ));
-        
-        // Exposed headers (visible to frontend)
+
+        // 5. Exposed Headers
         config.setExposedHeaders(Arrays.asList(
-            "Access-Control-Allow-Origin",
-            "Access-Control-Allow-Credentials",
-            "Authorization"
+            "Authorization", 
+            "Access-Control-Allow-Origin", 
+            "Access-Control-Allow-Credentials"
         ));
-        
-        // Max age for preflight requests (in seconds)
+
+        // 6. Pre-flight cache
         config.setMaxAge(3600L);
-        
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
-        
+
         return new CorsWebFilter(source);
     }
 }
