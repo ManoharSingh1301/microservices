@@ -1,5 +1,5 @@
 package com.example.assets.asset.service.impl;
-
+ 
 import com.example.assets.asset.dto.AssetRequestDTO;
 import com.example.assets.asset.dto.AssetResponseDTO;
 import com.example.assets.asset.entity.Asset;
@@ -9,15 +9,14 @@ import com.example.assets.asset.exception.InvalidAssetDataException;
 import com.example.assets.asset.repository.AssetRepository;
 import com.example.assets.asset.service.AssetService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
-
+ 
 @Service
 public class AssetServiceImpl implements AssetService {
-
+ 
     private final AssetRepository repo;
-
+ 
     public AssetServiceImpl(AssetRepository repo) {
         this.repo = repo;
     }
@@ -30,14 +29,14 @@ public class AssetServiceImpl implements AssetService {
         if (dto.getType() == null) {
             throw new InvalidAssetDataException("Asset type is required");
         }
-        
+       
         Asset asset = new Asset();
         asset.setName(dto.getName());
         asset.setType(dto.getType());
         asset.setLocation(dto.getLocation());
         //default status
-        asset.setStatus(AssetStatus.REGISTERED);
-
+        asset.setStatus(AssetStatus.ACTIVE);
+ 
         return map(repo.save(asset));
     }
     //get all assets
@@ -48,7 +47,7 @@ public class AssetServiceImpl implements AssetService {
                    .map(this::map)
                    .collect(Collectors.toList());
     }
-
+ 
     //get asset by id
     @Override
     public AssetResponseDTO getAssetById(Long id) {
@@ -56,31 +55,6 @@ public class AssetServiceImpl implements AssetService {
                 .orElseThrow(() -> new AssetNotFoundException(id));
         return map(asset);
     }
-
-    //update asset
-    @Override
-    public AssetResponseDTO updateAsset(Long id, AssetRequestDTO dto) {
-        Asset asset = repo.findById(id)
-                .orElseThrow(() -> new AssetNotFoundException(id));
-
-        if (dto.getName() == null || dto.getName().trim().isEmpty()) {
-            throw new InvalidAssetDataException("Asset name cannot be empty");
-        }
-        if (dto.getType() == null) {
-            throw new InvalidAssetDataException("Asset type is required");
-        }
-
-        asset.setName(dto.getName());
-        asset.setType(dto.getType());
-        asset.setLocation(dto.getLocation());
-        //(lifecycle update)
-        if (dto.getStatus() != null) {
-            asset.setStatus(dto.getStatus());
-        }
-
-        return map(repo.save(asset));
-    }
-
     //delete asset
     @Override
     public void deleteAsset(Long id) {
@@ -89,12 +63,12 @@ public class AssetServiceImpl implements AssetService {
         }
         repo.deleteById(id);
     }
-
+ 
     @Override
     public boolean existsById(Long id) {
         return repo.existsById(id);
     }
-
+ 
     //mapper
     private AssetResponseDTO map(Asset asset) {
         AssetResponseDTO dto = new AssetResponseDTO();
@@ -105,4 +79,39 @@ public class AssetServiceImpl implements AssetService {
         dto.setStatus(asset.getStatus());
         return dto;
     }
-}
+ 
+    @Override
+    public AssetResponseDTO updateAsset(Long id, AssetRequestDTO dto) {
+        Asset asset = repo.findById(id)
+                .orElseThrow(() -> new AssetNotFoundException(id));
+       
+        // Validate input
+        if (dto.getName() == null || dto.getName().trim().isEmpty()) {
+            throw new InvalidAssetDataException("Asset name cannot be empty");
+        }
+        if (dto.getType() == null) {
+            throw new InvalidAssetDataException("Asset type is required");
+        }
+       
+        // Update fields (no status validation - simple toggle between ACTIVE/INACTIVE)
+        asset.setName(dto.getName());
+        asset.setType(dto.getType());
+        asset.setLocation(dto.getLocation());
+       
+        if (dto.getStatus() != null) {
+            asset.setStatus(dto.getStatus());
+        }
+       
+        return map(repo.save(asset));
+    }
+   
+    @Override
+    public List<AssetResponseDTO> getAssetsByStatus(AssetStatus status) {
+        return repo.findByStatus(status)
+                .stream()
+                .map(this::map)
+                .collect(Collectors.toList());
+    }
+}  
+ 
+ 

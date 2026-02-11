@@ -1,9 +1,6 @@
 package com.example.assets.asset.enums;
-
+ 
 public enum AssetStatus {
-    REGISTERED,
-    OPERATIONAL,
-    MAINTENANCE,
-    UNDER_INSPECTION,
-    DECOMMISSIONED
+    ACTIVE,      // Asset is operational and in use
+    INACTIVE     // Asset is not in use
 }
