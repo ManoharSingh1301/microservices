@@ -2,9 +2,13 @@ package com.example.auth.service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import com.example.auth.dto.AdminDTO;
 
+import com.example.auth.dto.ManagerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -110,5 +114,29 @@ public class UserService {
         userRepository.save(user);
 
         return "Password reset successfully";
+    }
+    public List<ManagerDTO> getManagerDetails(){
+        List<User> user=userRepository.findAll();
+        List<ManagerDTO> m=new ArrayList<>();
+        for(User u:user)
+        {
+            if(u.getRole() != null && u.getRole().equals("manager"))
+            {
+                m.add(new ManagerDTO(u.getId(),u.getEmail(),u.getName()));
+            }
+        }
+        return m;
+    }
+    public List<AdminDTO> getAdminDetails(){
+        List<User> user=userRepository.findAll();
+        List<AdminDTO> m=new ArrayList<>();
+        for(User u:user)
+        {
+            if(u.getRole() != null && u.getRole().equals("admin"))
+            {
+                m.add(new AdminDTO(u.getId(),u.getEmail(),u.getName()));
+            }
+        }
+        return m;
     }
 }

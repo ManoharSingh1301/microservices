@@ -1,8 +1,10 @@
 package com.example.auth.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.example.auth.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,11 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping; // Imports POST, PUT
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.auth.dto.LoginRequest;
-import com.example.auth.dto.OtpVerificationRequest;
-import com.example.auth.dto.RegisterRequest;
 import com.example.auth.entity.User;
 import com.example.auth.service.UserService;
 
@@ -72,22 +72,28 @@ public class AuthController {
         }
     }
     @GetMapping("/getmanagerdetails")
-    public ResponseEntity<?> getManagerDetails() {
-        return ResponseEntity.ok("Manager Details Retrieved Successfully");
+    public List<ManagerDTO> getManagerDetails() {
+        return userService.getManagerDetails();
     }
     @GetMapping("/getadmindetails")
-    public ResponseEntity<?> getAdminDetails() {
-        return ResponseEntity.ok("Admin Details Retrieved Successfully");
+    public List<AdminDTO> getAdminDetails() {
+        return userService.getAdminDetails();
     }
-    @GetMapping("/details?role={role}")
-    public ResponseEntity<?> getDetailsByRole(@RequestBody Map<String, String> payload) {
-        String role = payload.get("role");
-        if ("manager".equalsIgnoreCase(role)) {
-            return ResponseEntity.ok("Manager Details Retrieved Successfully");
-        } else if ("admin".equalsIgnoreCase(role)) {
-            return ResponseEntity.ok("Admin Details Retrieved Successfully");
+    
+    @GetMapping("/details")
+    public ResponseEntity<?> getDetailsByRole(@RequestParam String role) {
+        System.out.println("Fetching details for role: " + role);
+        
+        if (role == null || role.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("Role parameter is required");
+        }
+        
+        if (role.equalsIgnoreCase("manager")) {
+            return ResponseEntity.ok(getManagerDetails());
+        } else if (role.equalsIgnoreCase("admin")) {
+            return ResponseEntity.ok(getAdminDetails());
         } else {
-            return ResponseEntity.badRequest().body("Invalid Role");
+            return ResponseEntity.badRequest().body("Invalid role. Use 'manager' or 'admin'");
         }
     }
 }
