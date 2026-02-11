@@ -20,26 +20,26 @@ public class ProductionPlanController {
         this.service = service;
     }
 
-    // ✅ Create Production Plan
+    
     @PostMapping
     public ResponseEntity<ProductionPlanResponseDTO> createPlan(
             @RequestBody ProductionPlanRequestDTO requestDto) {
         return new ResponseEntity<>(service.savePlan(requestDto), HttpStatus.CREATED);
     }
 
-    // ✅ Get all plans (Dashboard-friendly)
+    
     @GetMapping
     public ResponseEntity<List<ProductionPlanResponseDTO>> getAllPlans() {
         return ResponseEntity.ok(service.getAllPlans());
     }
 
-    // ✅ Get plan by ID
+    
     @GetMapping("/{id}")
     public ResponseEntity<ProductionPlanResponseDTO> getPlanById(@PathVariable Long id) {
         return ResponseEntity.ok(service.getPlanById(id));
     }
 
-    // ✅ Update plan
+    
     @PutMapping("/{id}")
     public ResponseEntity<ProductionPlanResponseDTO> updatePlan(
             @PathVariable Long id,
@@ -47,7 +47,15 @@ public class ProductionPlanController {
         return ResponseEntity.ok(service.updatePlan(id, requestDto));
     }
 
-    // ✅ Feign sanity check (dev only)
+    
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ProductionPlanResponseDTO> deletePlan(@PathVariable Long id) {
+        ProductionPlanResponseDTO deletedPlan = service.deletePlan(id);
+        return ResponseEntity.ok(deletedPlan);
+    }
+
+    
     @GetMapping("/test-assets")
     public ResponseEntity<String> testAssetIntegration() {
         service.processProduction();

@@ -10,5 +10,6 @@ public class ProductionPlanResponseDTO {
     private Double plannedVolume;
     private LocalDate startDate;
     private LocalDate endDate;
+    private String status; 
     private AssetDTO assetDetails;
 }

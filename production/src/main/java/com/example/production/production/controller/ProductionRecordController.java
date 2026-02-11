@@ -19,26 +19,26 @@ public class ProductionRecordController {
         this.service = service;
     }
 
-    // ✅ Create production record
+    
     @PostMapping
     public ResponseEntity<ProductionRecordResponseDTO> createRecord(
             @RequestBody ProductionRecordRequestDTO dto) {
         return new ResponseEntity<>(service.saveRecord(dto), HttpStatus.CREATED);
     }
 
-    // ✅ Get all records (Dashboard aggregation)
+    
     @GetMapping
     public ResponseEntity<List<ProductionRecordResponseDTO>> getAllRecords() {
         return ResponseEntity.ok(service.getAllRecords());
     }
 
-    // ✅ Get record by ID
+    
     @GetMapping("/{id}")
     public ResponseEntity<ProductionRecordResponseDTO> getRecordById(@PathVariable Long id) {
         return ResponseEntity.ok(service.getRecordById(id));
     }
 
-    // ✅ Update record
+    
     @PutMapping("/{id}")
     public ResponseEntity<ProductionRecordResponseDTO> updateRecord(
             @PathVariable Long id,
@@ -46,7 +46,7 @@ public class ProductionRecordController {
         return ResponseEntity.ok(service.updateRecord(id, dto));
     }
 
-    // ✅ Records by Plan (very important for dashboard)
+    
     @GetMapping("/plan/{planId}")
     public ResponseEntity<List<ProductionRecordResponseDTO>> getByPlan(
             @PathVariable Long planId) {

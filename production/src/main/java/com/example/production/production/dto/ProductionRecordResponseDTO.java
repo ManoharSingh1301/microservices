@@ -11,4 +11,5 @@ public class ProductionRecordResponseDTO {
     private Double actualVolume;
     private LocalDate date;
     private AssetDTO assetDetails;
+    private Double dailyPlannedTarget;
 }

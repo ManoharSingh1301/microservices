@@ -27,7 +27,7 @@ public class ProductionRecordService {
         this.assetClient = assetClient;
     }
 
-    // ✅ CREATE
+    
     public ProductionRecordResponseDTO saveRecord(ProductionRecordRequestDTO dto) {
 
         ProductionPlan plan = planRepository.findById(dto.getPlanId())
@@ -44,7 +44,7 @@ public class ProductionRecordService {
         return map(saved);
     }
 
-    // ✅ READ ALL
+    
     public List<ProductionRecordResponseDTO> getAllRecords() {
         return recordRepository.findAll()
                 .stream()
@@ -52,7 +52,7 @@ public class ProductionRecordService {
                 .collect(Collectors.toList());
     }
 
-    // ✅ READ BY ID
+    
     public ProductionRecordResponseDTO getRecordById(Long id) {
         ProductionRecord record = recordRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException(
@@ -60,7 +60,7 @@ public class ProductionRecordService {
         return map(record);
     }
 
-    // ✅ UPDATE
+    
     public ProductionRecordResponseDTO updateRecord(Long id, ProductionRecordRequestDTO dto) {
 
         ProductionRecord record = recordRepository.findById(id)
@@ -79,7 +79,7 @@ public class ProductionRecordService {
         return map(recordRepository.save(record));
     }
 
-    // ✅ VERY IMPORTANT (Dashboard)
+    
     public List<ProductionRecordResponseDTO> getRecordsByPlan(Long planId) {
         return recordRepository.findByPlan_PlanId(planId)
                 .stream()
@@ -87,7 +87,7 @@ public class ProductionRecordService {
                 .collect(Collectors.toList());
     }
 
-    // 🔁 MAPPER
+    
     private ProductionRecordResponseDTO map(ProductionRecord record) {
 
         AssetDTO asset = assetClient.getAssetById(record.getAssetId());
@@ -99,6 +99,7 @@ public class ProductionRecordService {
         dto.setActualVolume(record.getActualVolume());
         dto.setDate(record.getDate());
         dto.setAssetDetails(asset);
+        dto.setDailyPlannedTarget(record.getPlan().getDailyPlannedVolume());
 
         return dto;
     }
