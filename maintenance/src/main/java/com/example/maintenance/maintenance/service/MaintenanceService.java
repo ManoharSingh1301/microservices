@@ -40,9 +40,7 @@ public class MaintenanceService {
 
         AssetDTO asset = assetFeignClient.getAsset(dto.getAssetId());
 
-        if ("DECOMMISSIONED".equals(asset.getStatus())) {
-            throw new RuntimeException("Maintenance not allowed for this asset");
-        }
+        
 
         WorkOrder order = new WorkOrder();
         order.setAssetId(dto.getAssetId());

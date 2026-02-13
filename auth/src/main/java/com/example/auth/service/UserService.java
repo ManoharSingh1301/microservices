@@ -10,6 +10,7 @@ import com.example.auth.dto.AdminDTO;
 
 import com.example.auth.dto.ManagerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.auth.dto.LoginRequest;
@@ -17,6 +18,7 @@ import com.example.auth.dto.RegisterRequest;
 import com.example.auth.entity.User;
 import com.example.auth.repository.UserRepository;
 import com.example.auth.util.EmailUtil;
+
 
 @Service
 public class UserService {
@@ -26,6 +28,8 @@ public class UserService {
 
     @Autowired
     private EmailUtil emailUtil;
+
+    private BCryptPasswordEncoder encoder=new BCryptPasswordEncoder(12);
 
     // 1. REGISTER
     public String register(RegisterRequest request) {
@@ -37,7 +41,7 @@ public class UserService {
         User user = new User();
         user.setName(request.getName());
         user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+        user.setPassword(encoder.encode(request.getPassword()));
         user.setRole(request.getRole());
 
         userRepository.save(user);
@@ -53,7 +57,7 @@ public class UserService {
 
         // Handle if Password is null in DB
         String dbPass = user.getPassword();
-        if (dbPass == null || !dbPass.equals(request.getPassword())) {
+        if (dbPass == null || !encoder.matches(request.getPassword(), dbPass)) {
             throw new RuntimeException("Invalid credentials");
         }
 
