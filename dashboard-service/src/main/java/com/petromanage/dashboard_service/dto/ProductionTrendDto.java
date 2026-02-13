@@ -6,6 +6,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class ProductionTrendDto {
     private String date;
-    private double efficiency;
-    private double downtime;
+    private double actual;
+    private double planned;
 }

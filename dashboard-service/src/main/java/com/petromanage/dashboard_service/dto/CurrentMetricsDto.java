@@ -7,7 +7,5 @@ public class CurrentMetricsDto {
     private double efficiencyChange;
     private double assetUtilization;
     private double utilizationChange;
-    private double totalDowntime;
-    private double downtimeChange;
     private int maintenanceDue;
 }

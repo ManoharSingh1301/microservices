@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class MaintenancePredictionDto {
+    private Long workOrderId;
     private Long assetId;
     private String assetName;
     private String predictedDate;

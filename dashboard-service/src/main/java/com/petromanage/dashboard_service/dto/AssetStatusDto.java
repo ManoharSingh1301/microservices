@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class AssetStatusDto {
-    private Long id;
+    private Long assetId;
     private String name;
     private int utilization;
     private String status;
