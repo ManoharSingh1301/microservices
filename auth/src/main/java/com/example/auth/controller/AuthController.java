@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.auth.entity.User;
 import com.example.auth.service.UserService;
+import com.example.auth.util.JwtUtil;
 
 @RestController
 @RequestMapping("/auth")
@@ -26,6 +27,9 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
@@ -41,9 +45,19 @@ public class AuthController {
         try {
             User user = userService.login(request);
             
-            // Return simple data (No full User object to avoid crashes)
-            Map<String, String> response = new HashMap<>();
+            // Generate JWT token
+            String token = jwtUtil.generateToken(
+                user.getId(),
+                user.getEmail(),
+                user.getRole(),
+                user.getName()
+            );
+            
+            // Return token and user data
+            Map<String, Object> response = new HashMap<>();
             response.put("message", "Login Successful");
+            response.put("token", token);
+            response.put("userId", user.getId());
             response.put("name", user.getName());
             response.put("role", user.getRole());
             response.put("email", user.getEmail());
