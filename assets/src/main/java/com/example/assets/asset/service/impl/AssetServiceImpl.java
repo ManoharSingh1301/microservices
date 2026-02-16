@@ -112,6 +112,11 @@ public class AssetServiceImpl implements AssetService {
                 .map(this::map)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public int getCount() {
+        return (int) repo.count();
+    }
 }  
  
  

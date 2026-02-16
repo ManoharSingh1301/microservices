@@ -103,4 +103,16 @@ public class ProductionRecordService {
 
         return dto;
     }
+
+    public ProductionRecordResponseDTO deleteRecord(Long id) {
+        ProductionRecord record = recordRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException(
+                        "Record not found with id " + id));
+        recordRepository.delete(record);
+        return map(record);
+    }
+
+    public int getCount() {
+        return (int) recordRepository.count();
+    }
 }

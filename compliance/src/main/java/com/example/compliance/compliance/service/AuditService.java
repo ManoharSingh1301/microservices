@@ -27,4 +27,8 @@ public class AuditService {
     public void deleteAllAudits() {
         auditRepository.deleteAll();
     }
+
+    public int getCount() {
+        return (int) auditRepository.count();
+    }
 }

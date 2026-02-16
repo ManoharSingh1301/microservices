@@ -144,4 +144,9 @@ public class ComplianceReportService {
 
         auditService.createAudit(audit);
     }
+
+    /* ================= COUNT ================= */
+    public int getCount() {
+        return (int) reportRepository.count();
+    }
 }

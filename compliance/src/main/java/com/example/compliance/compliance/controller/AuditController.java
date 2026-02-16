@@ -31,4 +31,9 @@ public class AuditController {
     public void deleteAllAudits() {
         auditService.deleteAllAudits();
     }
+
+    @GetMapping("/count")
+    public ResponseEntity<Integer> getAuditCount() {
+        return ResponseEntity.ok(auditService.getCount());
+    }
 }

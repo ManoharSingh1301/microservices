@@ -52,4 +52,14 @@ public class ProductionRecordController {
             @PathVariable Long planId) {
         return ResponseEntity.ok(service.getRecordsByPlan(planId));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ProductionRecordResponseDTO> deleteRecord(@PathVariable Long id) {
+        return ResponseEntity.ok(service.deleteRecord(id));
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<Integer> getRecordCount() {
+        return ResponseEntity.ok(service.getCount());
+    }
 }

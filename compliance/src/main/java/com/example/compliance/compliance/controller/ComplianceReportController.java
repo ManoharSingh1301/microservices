@@ -53,4 +53,9 @@ public class ComplianceReportController {
         service.deleteReport(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/count")
+    public ResponseEntity<Integer> getReportCount() {
+        return ResponseEntity.ok(service.getCount());
+    }
 }

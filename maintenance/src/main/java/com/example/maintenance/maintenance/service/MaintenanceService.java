@@ -127,4 +127,9 @@ public class MaintenanceService {
 
         return dto;
     }
+    
+    /* ================= COUNT ================= */
+    public long getIncompleteCount() {
+        return workOrderRepository.countByStatusNot(WorkOrderStatus.COMPLETED);
+    }
 }

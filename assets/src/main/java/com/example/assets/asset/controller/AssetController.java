@@ -65,6 +65,11 @@ public class AssetController {
     public List<AssetResponseDTO> getAssetsByStatus(@PathVariable String status) {
         return service.getAssetsByStatus(AssetStatus.valueOf(status));
     }
+
+    @GetMapping("/count")
+    public int getAssetCount(){
+        return service.getCount();
+    }
  
 }
  

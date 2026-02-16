@@ -98,4 +98,8 @@ public class ProductionPlanService {
 
         return dto;
     }
+
+    public int getCount() {
+        return (int) repository.count();
+    }
 }

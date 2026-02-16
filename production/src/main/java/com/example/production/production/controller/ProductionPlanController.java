@@ -61,4 +61,9 @@ public class ProductionPlanController {
         service.processProduction();
         return ResponseEntity.ok("Asset Feign Client working");
     }
+
+    @GetMapping("/count")
+    public ResponseEntity<Integer> getPlanCount() {
+        return ResponseEntity.ok(service.getCount());
+    }
 }

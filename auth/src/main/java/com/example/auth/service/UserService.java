@@ -113,7 +113,7 @@ public class UserService {
             throw new RuntimeException("OTP has expired. Please regenerate.");
         }
 
-        user.setPassword(newPassword); 
+        user.setPassword(encoder.encode(newPassword)); 
         user.setOtp(null);
         userRepository.save(user);
 

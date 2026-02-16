@@ -37,4 +37,8 @@ public class MaintenanceController {
         return ResponseEntity.ok(maintenanceService.getAllWorkOrders());
     }
     
+    @GetMapping("/count")
+    public ResponseEntity<Long> getWorkOrderCountNotCompleted() {
+        return ResponseEntity.ok(maintenanceService.getIncompleteCount());
+    }
 }
