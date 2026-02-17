@@ -143,4 +143,29 @@ public class UserService {
         }
         return m;
     }
+
+    // 5. UPDATE USER INFO (name and email only, role cannot be changed)
+    public User updateUserInfo(Long userId, String name, String email) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        
+        // Update name if provided
+        if (name != null && !name.trim().isEmpty()) {
+            user.setName(name);
+        }
+        
+        // Update email if provided
+        if (email != null && !email.trim().isEmpty()) {
+            // Check if email is already in use by another user
+            Optional<User> existingUser = userRepository.findByEmail(email);
+            if (existingUser.isPresent() && !existingUser.get().getId().equals(userId)) {
+                throw new RuntimeException("Email already in use by another user");
+            }
+            user.setEmail(email);
+        }
+        
+        // Role cannot be changed - explicitly not allowing role modification
+        userRepository.save(user);
+        return user;
+    }
 }

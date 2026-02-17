@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping; // Imports POST, PUT, etc.
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -108,6 +109,30 @@ public class AuthController {
             return ResponseEntity.ok(getAdminDetails());
         } else {
             return ResponseEntity.badRequest().body("Invalid role. Use 'manager' or 'admin'");
+        }
+    }
+
+    @PutMapping("/update-user-info/{userId}")
+    public ResponseEntity<?> updateUserInfo(
+            @PathVariable Long userId,
+            @RequestBody UpdateUserInfoRequest request) {
+        try {
+            User updatedUser = userService.updateUserInfo(
+                userId, 
+                request.getName(), 
+                request.getEmail()
+            );
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "User information updated successfully");
+            response.put("userId", updatedUser.getId());
+            response.put("name", updatedUser.getName());
+            response.put("email", updatedUser.getEmail());
+            response.put("role", updatedUser.getRole());
+            
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }

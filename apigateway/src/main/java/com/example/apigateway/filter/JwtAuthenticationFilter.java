@@ -21,7 +21,7 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
     @Autowired
     private JwtUtil jwtUtil;
 
-    // Public endpoints that don't require JWT authentication
+    // No  JWT authentication for thses api endpoints
     private static final List<String> PUBLIC_ENDPOINTS = Arrays.asList(
             "/auth/login",
             "/auth/register",
@@ -37,16 +37,16 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
         ServerHttpRequest request = exchange.getRequest();
         String path = request.getURI().getPath();
 
-        // 🔍 LOG: Shows this filter runs on EVERY request
-        System.out.println("🔐 JWT Filter invoked for: " + request.getMethod() + " " + path);
+        
+        System.out.println("JWT Filter runs: " + request.getMethod() + " " + path);
 
-        // Skip JWT validation for public endpoints
+        
         if (isPublicEndpoint(path)) {
-            System.out.println("✅ Public endpoint - skipping JWT validation");
+            System.out.println(" Public endpoint - skipping JWT validation");
             return chain.filter(exchange);
         }
 
-        // Extract Authorization header
+        
         List<String> authHeaders = request.getHeaders().get("Authorization");
         
         if (authHeaders == null || authHeaders.isEmpty()) {
@@ -62,21 +62,21 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
         String token = authHeader.substring(7);
 
         try {
-            // Validate JWT token
+            
             if (!jwtUtil.validateToken(token)) {
-                System.out.println("❌ Invalid or expired token");
+                System.out.println(" Invalid or expired token");
                 return onError(exchange, "Invalid or expired token", HttpStatus.UNAUTHORIZED);
             }
 
-            // Extract user information from token
+            
             Long userId = jwtUtil.extractUserId(token);
             String email = jwtUtil.extractEmail(token);
             String role = jwtUtil.extractRole(token);
             String name = jwtUtil.extractName(token);
 
-            System.out.println("✅ JWT Valid - User: " + name + " (ID: " + userId + ", Role: " + role + ")");
+            System.out.println("JWT  - User: " + name + " (ID: " + userId + ", Role: " + role + ")");
 
-            // Add user information as headers for downstream services
+            
             ServerHttpRequest modifiedRequest = request.mutate()
                     .header("X-User-Id", String.valueOf(userId))
                     .header("X-User-Email", email)
@@ -84,7 +84,7 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
                     .header("X-User-Name", name)
                     .build();
 
-            // Continue with modified request
+            
             return chain.filter(exchange.mutate().request(modifiedRequest).build());
 
         } catch (Exception e) {
@@ -92,16 +92,12 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
         }
     }
 
-    /**
-     * Check if the endpoint is public (doesn't require authentication)
-     */
+    
     private boolean isPublicEndpoint(String path) {
         return PUBLIC_ENDPOINTS.stream().anyMatch(path::startsWith);
     }
 
-    /**
-     * Handle authentication errors
-     */
+    
     private Mono<Void> onError(ServerWebExchange exchange, String message, HttpStatus status) {
         ServerHttpResponse response = exchange.getResponse();
         response.setStatusCode(status);
@@ -115,6 +111,6 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
 
     @Override
     public int getOrder() {
-        return -100; // High priority - execute before other filters
+        return -100;
     }
 }
